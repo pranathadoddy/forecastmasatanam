@@ -141,8 +141,30 @@ class ForecastHighOrder extends CI_Controller{
 	private function getforecastresult($flr, $actualdata1, $actualdata2, $universeofdiscourse){
 		$result=0;
 		$find=false;
-		$enrollment="";
-		
+		$enrollment1="";
+		$enrollment2="";
+
+		foreach ($universeofdiscourse as $row) {
+			$enrollment1=getenrollment($actualdata1, $row);
+			$enrollment2=getenrollment($actualdata2, $row);
+		}
+
+		$isInFlr;=this->isinflr($enrollment1, $enrollment2, $flr);
+
+		if($isInFlr!=false){
+			$index=$isInFlr;
+			
+		}
+
+
 	}
+
+	private function getenrollment($data, $row){
+		if(($currentdata>=$row["Min"]) && ($currentdata<$row["Max"])){
+			return "A".$row["Universe"];
+		} 
+
+		return false;
+	}	
 }
 ?>
