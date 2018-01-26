@@ -153,10 +153,19 @@ class ForecastHighOrder extends CI_Controller{
 
 		if($isInFlr!=false){
 			$index=$isInFlr;
-			
+			$subgroup=$flr[$index][2];
+
 		}
 
 
+	}
+
+	private function getforecastinflr($subgroup, $universeofdiscourse){
+		
+	}
+
+	private function getuniqueenrollment($subgroup){
+		
 	}
 
 	private function getenrollment($data, $row){
