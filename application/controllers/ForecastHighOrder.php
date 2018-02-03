@@ -78,7 +78,7 @@ class ForecastHighOrder extends CI_Controller{
 			$temp_minvalue=$temp_maxvalue;
 			$temp_maxvalue=$temp_maxvalue+$range;
 			$average=($temp_minvalue+$temp_maxvalue)/2;
-			$universeofdiscourse=array("Universe"=>$count, "Min"=>$temp_minvalue, "Max"=>$temp_maxvalue, "Average"=>$average);
+			$universeofdiscourse=array("Universe"=>"A".$count, "Min"=>$temp_minvalue, "Max"=>$temp_maxvalue, "Average"=>$average);
 			array_push($result, $universeofdiscourse);
 
 			$count++;
@@ -93,7 +93,7 @@ class ForecastHighOrder extends CI_Controller{
 		foreach ($arr as $value) {
 			foreach ($universeofdiscourse as $row) {
 				if(($value>=$row["Min"]) && ($value<$row["Max"])){
-					$fuzifiedenrollment="A".$row["Universe"];
+					$fuzifiedenrollment=$row["Universe"];
 					break;
 				}
 			}
@@ -154,23 +154,57 @@ class ForecastHighOrder extends CI_Controller{
 		if($isInFlr!=false){
 			$index=$isInFlr;
 			$subgroup=$flr[$index][2];
+			$result=$this->getforecastinflr($subgroup, $universeofdiscourse);
 
+			return $result;
 		}
+		
+		$average1=$this->getaverageenrollment($enrollment1, $universeofdiscourse);
+		$average2=$this->getaverageenrollment($enrollment2, $universeofdiscourse);
 
+		$result=($average1+$average2)/2;
 
+		return $result;
 	}
 
 	private function getforecastinflr($subgroup, $universeofdiscourse){
-		
+		$jumlahAverageEnrollment=0;
+		$jumlahEnrollment=0;
+		foreach ($subgroup as $row) {
+			$jumlahrow=$this->getenrollmentcount($row, $enrollment);
+			$average=$this->getaverageenrollment($row, $universeofdiscourse);
+			$jumlahEnrollment+=$jumlahrow;
+
+			$jumlahAverageEnrollment+=($jumlahrow*$average);
+		}
+
+		$result=$jumlahAverageEnrollment/$jumlahEnrollment;
 	}
 
-	private function getuniqueenrollment($subgroup){
-		
+	private function getenrollmentcount($subgroup, $enrollment){
+		$jumlah=0;
+		foreach ($subgroup as $row) {
+			if($enrollment==$row){
+				$jumlah+=1;
+			}
+		}
+
+		return $jumlah;
+	}
+
+	private function getaverageenrollment($enrollment, $universeofdiscourse){
+		foreach ($universeofdiscourse as $row) {
+			if($enrollment==$row["Universe"]){
+				return $row["Average"];
+			}
+		}
+
+		return false;
 	}
 
 	private function getenrollment($data, $row){
 		if(($currentdata>=$row["Min"]) && ($currentdata<$row["Max"])){
-			return "A".$row["Universe"];
+			return $row["Universe"];
 		} 
 
 		return false;
