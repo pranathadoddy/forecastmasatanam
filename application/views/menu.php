@@ -8,5 +8,8 @@
 	elseif ($isi=="CurahHujan") {
 		$this->load->view('CurahHujan/listcurahhujan');
 	}
+	elseif ($isi=="Forecast") {
+		$this->load->view('Forecast/peramalan');
+	}
 	
 ?>

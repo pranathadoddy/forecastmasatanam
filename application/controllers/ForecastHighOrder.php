@@ -46,8 +46,8 @@ class ForecastHighOrder extends CI_Controller{
 
 
 		$allcurahhujan=array_column($curahhujanarray, 'CurahHujan');
-
-		$range=55;
+		
+		$range=50;
 		$mincurahhujanvalue=$this->getminvalue($allcurahhujan);
 		$maxcurahhujanvalue=$this->getmaxvalue($allcurahhujan, $range);
 		

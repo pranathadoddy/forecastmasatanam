@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Peramalan Masa Tanam</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url()?>template/sbadmin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                <a class="navbar-brand" href="index.html">Peramalan Masa Tanam</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -110,13 +110,16 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="<?php echo base_url()?>index.php/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url()?>index.php/Desa"><i class="fa fa-dashboard fa-fw"></i> Desa</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url()?>index.php/CurahHujan"><i class="fa fa-dashboard fa-fw"></i> Curah Hujan</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url()?>index.php/Forecast"><i class="fa fa-dashboard fa-fw"></i> Peramalan</a>
                         </li>
                     </ul>
                 </div>
