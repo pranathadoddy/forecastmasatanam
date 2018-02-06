@@ -50,5 +50,35 @@ class MCurahhujan extends CI_Model{
 		$query=$this->db->get();
 		return $query->row();
 	}
+
+	function listcurahhujandesasort($iddesa){
+		$this->db->from('tb_curahhujan');
+		$this->db->where('IdDaerah', $iddesa);
+		$this->db->order_by('CurahHujan','asc');
+		$this->db->select('*');
+		return $this->db->get();
+	}
+
+	function listcurahhujandesawithrange($iddesa, $min, $max){
+		$this->db->from('tb_curahhujan');
+		$this->db->where('IdDaerah', $iddesa);
+		$this->db->where('CurahHujan >', $min);
+		$this->db->where('CurahHujan <', $max);
+		$this->db->order_by('id','asc');
+		$this->db->select('*');
+		return $this->db->get();
+	}
+
+	function listsuhudesawithrange($iddesa, $min, $max){
+		$this->db->from('tb_curahhujan');
+		$this->db->where('IdDaerah', $iddesa);
+		$this->db->where('Suhu >', $min);
+		$this->db->where('Suhu <', $max);
+		$this->db->order_by('id','asc');
+		$this->db->select('*');
+		return $this->db->get();
+	}
+
+
 }
 ?>
