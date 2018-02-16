@@ -40,7 +40,7 @@ function numbertomonth($number){
 ?>
 <div class="row">
   <div class="col-lg-12">
-    <h1 class="page-header">Curah Hujan</h1>
+    <h1 class="page-header">Curah Hujan dan Suhu</h1>
   </div>
   <!-- /.col-lg-12 -->
 </div>

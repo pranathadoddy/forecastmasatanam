@@ -79,6 +79,24 @@ class MCurahhujan extends CI_Model{
 		return $this->db->get();
 	}
 
+	function gettahun($iddesa){
+		$this->db->from('tb_curahhujan');
+		$this->db->where('IdDaerah', $iddesa);
+		$this->db->order_by('id','desc');
+		$this->db->select('*');
+		$query = $this->db->get();
+		$ret = $query->row();
+		return $ret->Tahun;
+	}
 
+	function counttimeseries($iddesa, $tahun){
+		$this->db->select('COUNT(Id) as Total');
+		$this->db->from('tb_curahhujan');
+		$this->db->where('IdDaerah', $iddesa);
+		$this->db->order_by('id','desc');
+		$query = $this->db->get();
+		$ret = $query->row();
+		return $ret->Total;
+	}
 }
 ?>

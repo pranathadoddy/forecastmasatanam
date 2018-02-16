@@ -9,7 +9,8 @@ class ForecastHighOrder extends CI_Controller{
 	}
 
 
-	function index($iddesa){
+	function index(){
+		$iddesa=$this->input->post('iddesa');
 		$result=array(
 			array('Bulan'=>'Januari', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
 			array('Bulan'=>'Pebruari', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
@@ -29,9 +30,49 @@ class ForecastHighOrder extends CI_Controller{
 		$result=$this->forecasttemperature($iddesa, $result);
 		//echo json_encode($result);
 		$result=$this->countetp($result);
+		
+		$data['result']=$result;
 
 		echo json_encode($result);
+	}
+
+	function viewdetail($iddesa){
+		$result=array(
+			array('Bulan'=>'Januari', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Pebruari', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Maret', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'April', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Mei', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Juni', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Juli', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Agustus', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'September', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Oktober', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'November', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Desember', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+		);
+
+		$result=$this->forecastrainfall($iddesa, $result);
+		$result=$this->forecasttemperature($iddesa, $result);
+		//echo json_encode($result);
+		$result=$this->countetp($result);
 		
+
+
+		$data['result']=$result;
+		$data['desa']=$this->Mdesa->editdesa($iddesa)->NamaDesa;
+		$tahun=$this->MCurahHujan->gettahun($iddesa);
+		$countData=$this->MCurahHujan->counttimeseries($iddesa, $tahun);
+
+		if($countData<12){
+			$data['tahun']=$tahun;
+		}else{
+			$data['tahun']=$tahun+1;
+		}
+
+		$data['isi']='ForecastDetail';
+		$this->load->view('dashboarduser',$data);
+
 	}
 
 	private function forecastrainfall($iddesa, $result){
@@ -46,7 +87,7 @@ class ForecastHighOrder extends CI_Controller{
 
 
 		$allcurahhujan=array_column($curahhujanarray, 'CurahHujan');
-		
+
 		$range=50;
 		$mincurahhujanvalue=$this->getminvalue($allcurahhujan);
 		$maxcurahhujanvalue=$this->getmaxvalue($allcurahhujan, $range);

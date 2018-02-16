@@ -13,14 +13,15 @@ class Desa extends CI_Controller{
 	}
 
 	function create(){
+		
 		$this->load->view("Desa/create");
 	}
 
 	function tambahdesa(){
 		$data= array(
 			'NamaDesa' =>$this->input->post('namadesa'),
-			'Tlp'=>$this->input->post('tlp'),
-			'Kl'=>$this->input->post('kl'),
+			'Longitude'=>$this->input->post('long'),
+			'Latitude'=>$this->input->post('lat')
 			);
 		$this->Mdesa->insertdesa($data);
 	}
@@ -34,8 +35,8 @@ class Desa extends CI_Controller{
 	function updatedesa(){
 		$data= array(
 			'NamaDesa' => $this->input->post('namadesa'),
-			'Tlp'=>$this->input->post('tlp'),
-			'Kl'=>$this->input->post('kl'), 
+			'Longitude'=>$this->input->post('long'),
+			'Latitude'=>$this->input->post('lat')
 			);
 		$id=$this->input->post('iddesa');
 		$this->Mdesa->updatedesa($data,$id);

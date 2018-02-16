@@ -11,5 +11,10 @@
 	elseif ($isi=="Forecast") {
 		$this->load->view('Forecast/peramalan');
 	}
-	
+	elseif ($isi=="ForecastUser") {
+		$this->load->view('Forecast/viewperamalan');
+	}
+	elseif ($isi=="ForecastDetail") {
+		$this->load->view('Forecast/viewdetail');
+	}
 ?>

@@ -15,6 +15,11 @@ class Forecast extends CI_Controller{
 
 	}
 
-	
+	function view(){
+		$data['listdesa']=$this->Mdesa->listdesa();
+		$data['isi']='ForecastUser';
+		$this->load->view('dashboarduser',$data);
+	}
+
 }
 ?>
