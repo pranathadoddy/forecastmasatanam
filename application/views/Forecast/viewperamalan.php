@@ -2,16 +2,14 @@
 <div class="col-lg-12">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Peramalan</h1>
+			<h1 class="page-header">Peta Sebaran Lahan Kering Kabupaten Klungkung</h1>
 		</div>
 		<!-- /.col-lg-12 -->
 	</div>
 	<div class="row">
 		<div class="col-lg-12" id="body-event">
 			<div class="panel panel-red">
-				<div class="panel-heading">
-					List Desa
-				</div>
+			
 				<!-- /.panel-heading -->
 				<div class="panel-body">
 					<div class="col-lg-12">

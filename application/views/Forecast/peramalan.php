@@ -26,6 +26,16 @@
 							?>
 							
 						</select>
+
+					</div>
+
+					<div class="form-group">
+						<label>Tahun</label>
+						<select class="form-control" id="tahun" name="tahun">
+								<option value="2015">2015</option>	
+								<option value="2016">2016</option>						
+						</select>
+						
 					</div>
 					
 				</div>
@@ -82,7 +92,14 @@
 <script>
 	
 	$("#iddesa").change(function(e){
+		forecast(e);
+	})
 
+	$("#tahun").change(function(e){
+		forecast(e);
+	})
+
+	function forecast(e){
 		e.preventDefault();
 		var form=$("#desaMaintenance")[0];
 		var formData=new FormData(form);
@@ -103,6 +120,7 @@
 						Bulan:value.Bulan,
 						CurahHujan:value.CurahHujan,
 						Etp:value.ETP,
+						Suhu:value.Suhu,
 						Status:value.Status
 					}
 
@@ -137,6 +155,7 @@
 			            { title: "Bulan" },
 			            { title: "CurahHujan" },
 			            { title: "Etp" },
+			            { title: "Suhu" },
 			            { title: "Status Kelayakan Masa Tanam" }
 			        ],
 			        paging: false,
@@ -152,8 +171,7 @@
 				alert("error"+xhr.responseText);
 			}
 		});
-	})
-
+	}
 
 </script>
 

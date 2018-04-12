@@ -57,6 +57,7 @@ function numbertomonth($number){
           <thead>
             <tr>
               <th>No</th>
+              <th>Nama Desa</th>
               <th>Tahun</th>
               <th>Bulan</th>
               <th>Curah Hujan</th>
@@ -71,6 +72,7 @@ function numbertomonth($number){
               ?>
               <tr class="odd gradeX" id="tb-event">
                 <td><?php echo $no;?></td>
+                <td><?php echo $row->NamaDesa;?></td>
                 <td><?php echo $row->Tahun;?></td>
                 <td><?php echo numbertomonth($row->Bulan);?></td>
                 <td><?php echo $row->CurahHujan;?></td>

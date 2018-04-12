@@ -1,6 +1,6 @@
 <?php
 
-class ForecastHighOrder extends CI_Controller{
+class ForecastHighOrderThree extends CI_Controller{
 	function __construct()
 	{
 		parent::__construct();
@@ -9,11 +9,8 @@ class ForecastHighOrder extends CI_Controller{
 	}
 
 
-	function index(){
-		$iddesa=$this->input->post('iddesa');
-		$tahun=$this->input->post('tahun');
-
-
+	function index($iddesa){
+		
 		$result=array(
 			array('Bulan'=>'Januari', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
 			array('Bulan'=>'Pebruari', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
@@ -29,8 +26,8 @@ class ForecastHighOrder extends CI_Controller{
 			array('Bulan'=>'Desember', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
 		);
 
-		$result=$this->forecastrainfallnew($iddesa, $result, $tahun);
-		$result=$this->forecasttemperaturenew($iddesa, $result, $tahun);
+		$result=$this->forecastrainfall($iddesa, $result);
+		$result=$this->forecasttemperature($iddesa, $result);
 		//echo json_encode($result);
 		$result=$this->countetp($result);
 		
@@ -39,45 +36,46 @@ class ForecastHighOrder extends CI_Controller{
 		echo json_encode($result);
 	}
 
-	function forecastrainfallnew($iddesa, $result, $tahun){
+	function test($iddesa){
+		$result=array(
+			array('Bulan'=>'Januari', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Pebruari', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Maret', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'April', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Mei', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Juni', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Juli', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Agustus', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'September', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Oktober', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'November', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+			array('Bulan'=>'Desember', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
+		);
+
 		$jum=count($result);
 		
-		for($i=0;$i<$jum;$i++) {
+		for($i=0;$i<$jum;$i++) 
+		{
 			$bulan=$i+1;
-			$curahhujansortresult=$this->MCurahHujan->listcurahhujandesasorttest($iddesa, $bulan, $tahun);
+			$curahhujansortresult=$this->MCurahHujan->listcurahhujandesasorttest($iddesa, $bulan);
 			$curahhujansortarray=$curahhujansortresult->result_array();
 			$allcurahhujansort=array_column($curahhujansortarray, 'CurahHujan');
 
 			$box_plot=$this->box_plot_values($allcurahhujansort);
 
-			$curahhujanresult=$this->MCurahHujan->listcurahhujandesawithrangetest($iddesa,$box_plot['min'],$box_plot['max'], $bulan,$tahun);
+			$curahhujanresult=$this->MCurahHujan->listcurahhujandesawithrangetest($iddesa,$box_plot['min'],$box_plot['max'], $bulan);
+			
 			$curahhujanarray=$curahhujanresult->result_array();
 
-			$allcurahhujan=array_column($curahhujanarray, 'CurahHujan');
 
-			$forecast=$this->forecastdata($allcurahhujan);
+			$allcurahhujan=array_column($curahhujanarray, 'CurahHujan');
+			
+			$forecast=$this->forecastrainfall2($allcurahhujan);
+			array_push($allcurahhujan, $forecast);
 			$result[$i]['CurahHujan']=$forecast;
 		}
 		
-		return $result;
-	}
-
-	function forecasttemperaturenew($iddesa, $result, $tahun){
-		$jum=count($result);
-		
-		for($i=0;$i<$jum;$i++) {
-			$bulan=$i+1;
-
-			$suhuresult=$this->MCurahHujan->listsuhudesatest($iddesa, $bulan, $tahun);
-			$suhuarray=$suhuresult->result_array();
-
-			$allsuhu=array_column($suhuarray, 'Suhu');
-			
-			$forecast=$this->forecastdata($allsuhu);
-			$result[$i]['Suhu']=$forecast;
-		}
-
-		return $result;
+		echo json_encode($result);
 	}
 
 	function viewdetail($iddesa){
@@ -96,11 +94,13 @@ class ForecastHighOrder extends CI_Controller{
 			array('Bulan'=>'Desember', 'CurahHujan'=>0, 'Suhu'=>0, 'ETP'=>0, 'Status'=>''),
 		);
 
-		$result=$this->forecastrainfallnew($iddesa, $result);
-		$result=$this->forecasttemperaturenew($iddesa, $result);
+		$result=$this->forecastrainfall($iddesa, $result);
+		$result=$this->forecasttemperature($iddesa, $result);
 		//echo json_encode($result);
 		$result=$this->countetp($result);
 		
+
+
 		$data['result']=$result;
 		$data['desa']=$this->Mdesa->editdesa($iddesa)->NamaDesa;
 		$tahun=$this->MCurahHujan->gettahun($iddesa);
@@ -117,54 +117,148 @@ class ForecastHighOrder extends CI_Controller{
 
 	}
 
-	private function forecastdata($alldata, $range=0){
-		if($range==0){
-			$range=$this->getrange($alldata);
-		}
-		
-		
-		$mincurahhujanvalue=$this->getminvalue($alldata);
-		$maxcurahhujanvalue=$this->getmaxvalue($alldata, $range);
+	private function forecastrainfall2($allcurahhujan){
+		$range=$this->getrange($allcurahhujan);
+		//echo $range;
+		$mincurahhujanvalue=$this->getminvalue($allcurahhujan);
+		$maxcurahhujanvalue=$this->getmaxvalue($allcurahhujan, $range);
 		
 		$universeofdiscourse=$this->getuniverseofdiscourse($mincurahhujanvalue, $maxcurahhujanvalue, $range);
-		$enrollment=$this->getenrollment($alldata, $universeofdiscourse);
+		$enrollment=$this->getenrollment($allcurahhujan, $universeofdiscourse);
 
 		$flr=$this->getlogicalrelationship($enrollment);
 
-		$countdata=count($alldata);
-		$actualdata1=$alldata[$countdata-2];
-		$actualdata2=$alldata[$countdata-1];
+		$countdata=count($allcurahhujan);
+		$actualdata1=$allcurahhujan[$countdata-2];
+		$actualdata2=$allcurahhujan[$countdata-1];
 
+		
+
+		
 		$forecast=$this->getforecastresult($flr, $actualdata1, $actualdata2, $universeofdiscourse);
 		 	
 
 		return $forecast;
 	}
 
-	
+	private function forecastrainfall($iddesa, $result){
+		$curahhujansortresult=$this->MCurahHujan->listcurahhujandesasort($iddesa);
+		$curahhujansortarray=$curahhujansortresult->result_array();
+		$allcurahhujansort=array_column($curahhujansortarray, 'CurahHujan');
+		
+		$box_plot=$this->box_plot_values($allcurahhujansort);
+
+		$curahhujanresult=$this->MCurahHujan->listcurahhujandesawithrange($iddesa,$box_plot['min'],$box_plot['max']);
+		$curahhujanarray=$curahhujanresult->result_array();
+
+
+		$allcurahhujan=array_column($curahhujanarray, 'CurahHujan');
+
+		$range=50;
+		//echo $range;
+		$mincurahhujanvalue=$this->getminvalue($allcurahhujan);
+		$maxcurahhujanvalue=$this->getmaxvalue($allcurahhujan, $range);
+		
+		$universeofdiscourse=$this->getuniverseofdiscourse($mincurahhujanvalue, $maxcurahhujanvalue, $range);
+		$enrollment=$this->getenrollment($allcurahhujan, $universeofdiscourse);
+
+		$flr=$this->getlogicalrelationship($enrollment);
+
+		$countdata=count($allcurahhujan);
+		$actualdata1=$allcurahhujan[$countdata-2];
+		$actualdata2=$allcurahhujan[$countdata-1];
+
+		$keys = array_keys($result);
+
+		for($i = 0; $i < count($result); $i++) {
+			$forecast=0;
+		 	if($result[$i]['Bulan']=='Januari'){
+		 		$forecast=$this->getforecastresult($flr, $actualdata1, $actualdata2, $universeofdiscourse);
+		 	}
+		 	elseif ($result[$i]['Bulan']=='Pebruari') {
+		 		$forecast=$this->getforecastresult($flr, $actualdata2, $result[$i-1]['CurahHujan'], $universeofdiscourse);
+		 	}
+		 	else{
+		 		$forecast=$this->getforecastresult($flr, $result[$i-2]['CurahHujan'], $result[$i-1]['CurahHujan'], $universeofdiscourse);
+		 	}
+		 	$result[$i]['CurahHujan']=$forecast;
+		 	
+		}
+
+		return $result;
+		//
+		//echo json_encode($forecast);
+	}
+
 	private function getrange($allcurahhujan){
 		$count=count($allcurahhujan);
+		
 		$jumlah=0;
 		foreach ($allcurahhujan as $key => $value) {
 			
 			if(($key!=0) && ($key!=($count-1))){
 				
 				$jumlah+=abs($allcurahhujan[$key+1]-$allcurahhujan[$key]);
-				
 			}
 		}
 
-		
 		$average=$jumlah/$count;
-
 		$result=floor($average/2);
-		if($result==0){
-			$result=number_format(($average/2), 1);
-		}
+
 		return $result;
 	}
 
-	
+	private function forecasttemperature($iddesa, $result){
+		$suhuresult=$this->MCurahHujan->listcurahhujandesa($iddesa);
+		$suhuarray=$suhuresult->result_array();
+
+		$allsuhu=array_column($suhuarray, 'Suhu');
+
+
+		$box_plot=$this->box_plot_values($allsuhu);
+
+		$suhuresult=$this->MCurahHujan->listsuhudesawithrange($iddesa,$box_plot['min'],$box_plot['max'] );
+		$suhuarray=$suhuresult->result_array();
+
+		$allsuhu=array_column($suhuarray, 'Suhu');
+
+		$range=0.3;
+		$minsuhuvalue=$this->getminvalue($allsuhu);
+		$maxsuhuvalue=$this->getmaxvalue($allsuhu, $range);
+
+		//echo $minsuhuvalue." ".$maxsuhuvalue;
+
+		$universeofdiscourse=$this->getuniverseofdiscourse($minsuhuvalue, $maxsuhuvalue, $range);
+		$enrollment=$this->getenrollment($allsuhu, $universeofdiscourse);
+
+		$flr=$this->getlogicalrelationship($enrollment);
+
+		$countdata=count($allsuhu);
+		$actualdata1=$allsuhu[$countdata-2];
+		$actualdata2=$allsuhu[$countdata-1];
+
+		$keys = array_keys($result);
+
+		for($i = 0; $i < count($result); $i++) {
+			$forecast=0;
+		 	if($result[$i]['Bulan']=='Januari'){
+		 		$forecast=$this->getforecastresult($flr, $actualdata1, $actualdata2, $universeofdiscourse);
+		 	}
+		 	elseif ($result[$i]['Bulan']=='Pebruari') {
+		 		$forecast=$this->getforecastresult($flr, $actualdata2, $result[$i-1]['Suhu'], $universeofdiscourse);
+		 	}
+		 	else{
+		 		$forecast=$this->getforecastresult($flr, $result[$i-2]['Suhu'], $result[$i-1]['Suhu'], $universeofdiscourse);
+		 	}
+		 	$result[$i]['Suhu']=$forecast;
+		 	
+		}
+		
+
+		return $result;
+		//echo json_encode($logicalrelationship);
+
+	}
 	
 	function box_plot_values($array)
 	{
@@ -178,7 +272,7 @@ class ForecastHighOrder extends CI_Controller{
 	        'higher_outlier' => 0,
 	        'iqr'			 => 0
 	    );
-
+	   
 	    $array_count = count($array);
 	    sort($array, SORT_NUMERIC);
 
@@ -243,7 +337,7 @@ class ForecastHighOrder extends CI_Controller{
 		$temp_maxvalue=max($arr);
 		$minvalue=min($arr);
 		$maxvalue=0;
-		while($maxvalue<=$temp_maxvalue){
+		while($maxvalue<$temp_maxvalue){
 			$maxvalue=$minvalue+$range;
 			$minvalue=$maxvalue;
 		}

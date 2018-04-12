@@ -20,8 +20,8 @@
 		  });
         // Add a listener for the click event
          google.maps.event.addListener(map, 'click', function(event){
-            addMarker(event.latLng);
-            var lat = event.latLng.lat();
+          addMarker(event.latLng);
+          var lat = event.latLng.lat();
 	        var lng = event.latLng.lng();
 	        $('#lat').val(lat);
 	        $('#long').val(lng);
